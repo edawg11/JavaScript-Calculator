@@ -1,143 +1,62 @@
+'use strict';
+
+$(document).ready(init);
+
+function init(){
+	$('.block').on('click', clickToChooseBlock);
+	$('.tower').on('click', clickToChooseDestination);
+	
+	
+}
 
 
-var numberButtons = document.getElementsByClassName('button');
-var operatorButtons = document.getElementsByClassName('operator');
-var calcScreen = document.getElementById('calcScreen'); 
-var input = [];
-var inputString = input.join("");
-var calcScreenVal = calcScreen.innerHTML;
-var operators = ['+', '-', 'x', '÷'];
-var leftSide = [];
-var rightSide = [];
-var middle = [];
-var numArray = ["1","2","3","4","5","6","7","8","9","0"];
-var temp;
-var operator;
-var second;
+var chosenBlock;
+var destination;
+var blockIsChosen = false;
+// var clickedId = $(this).attr("id");
+// console.log('clicked:'+ $(this).attr("id"));
+//   return false; 
 
-
-
-addEventListenerToButtons();
-// (/x/g, '*').replace(/÷/g, '/');
-
-
-
-function addEventListenerToButtons(){
-	for(i = 0; i < numberButtons.length; i++) {
-    numberButtons[i].addEventListener('click', numberClicked);
+function checkForVictory(){
+	if($('#c').children('.block').length ===3 ) {
+		alert('you won');
 	}
 }
-	
-// ...
-function numberClicked(event) {
-	var button = event.target; 
-	var buttonVal = button.innerHTML;
 
-	
-	
-	if (numArray.indexOf(buttonVal) !== -1) {
-		
-			input.push(buttonVal);
-			inputString = input.join("");
-			temp = parseFloat(inputString);
-			console.log("temp:", temp);
-	
-		
+function clickToChooseBlock(e){
+	// console.log(e);
+	chosenBlock ="";
+	e.stopPropagation();
+	if ($(this).is(' :last-child')) {
+		chosenBlock = $(this).attr("id");
+  		console.log('chosenBlock:', chosenBlock , "is block chosen:", blockIsChosen);
 	}
-
-	if (buttonVal === "AC") {
-		input = [];
-		inputString = " "
-		temp = undefined;
-		console.log('tempCleared:', temp)
-		operator = "";
-		console.log('operatorCleared:', operator);
-	};
-
-	calcScreen.textContent = inputString;
-
-	switch (buttonVal) {
-		case "+":
-			var operator = "+";
-			console.log("operator:", operator);
-			break;
-	
-		case "-":
-			var operator = "-";
-			console.log("operator:", operator);
-			break
-
-		case "÷":
-			var operator = "/";
-			console.log("operator:", operator);
-			break;
-
-		case "X":
-			var operator = "*";
-			console.log("operator:", operator);
-			console.log('temp', temp);
-			break;	
-				
-
-	}
-  
-  // 	switch (buttonVal) {
-  // 		case numArray.indexOf[buttonVal] !== -1:
-  // 			input.push(buttonVal);
-		// 	inputString = input.join("");
-		// 	calcScreenVal = inputString;
-		// 	break
-
-		// case "AC" :
-  // 			input = [];
-  // 			inputString = " ";
-  // 			break;
-
-  // 		case numArray.indexOf[buttonVal] === -1:
-  // 			middle.push(buttonVal);
-  // 			break;
-
-  // 	}
-	
-
-	// if (buttonVal === "AC") {
-	// input = [];
-	// inputString = " "
-	// };
-
-	// if (buttonVal ==="x"){
-	// 	middle.push(buttonVal);
-	// 	console.log("middle", middle)
-	// }
-
-	// else {
-	// 	console.log("clicked something else")
-	// };
-
-	// else {
-	// 	console.log('clicked something else')
-	// }
-
-
- 
-
-  // switch(buttonVal) {
-  // 	case "AC" :
-  // 		input = [];
-  // 		inputString = " ";
-  // 		break;
-  // }
-
-
-  // if (buttonVal === "AC") {
-  // 	input = [];
-  // 	inputString = " "
-  // };
-
-  // console.log('inputString:', inputString)
-  // console.log("middle:", middle)
-
 }
 
 
 
+function clickToChooseDestination(e){
+	switch(chosenBlock){
+		case "small":
+			$(this).append($('#'+chosenBlock));
+				break;
+		case "med":
+			if ($(this).find('#small').length) {
+				console.log('small found') 
+			} else {
+				$(this).append($('#'+chosenBlock));
+			}
+				break;	
+		case "large":
+			if ($(this).find('.block').length) {
+				console.log('has children')
+			} else {
+				$(this).append($('#'+chosenBlock));
+			}
+				break;
+	}
+	
+	checkForVictory();
+}
+
+	
